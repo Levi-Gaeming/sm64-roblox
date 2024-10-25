@@ -15,3 +15,6 @@ Any bugs or behavioral quirks of the physics in this are intentional and will no
 ## Terms of Use
 
 You *may* use this in your game, **but you must provide credit** to this repository and the SM64 Decompilation Project. I would **NOT** advise using it as a foundation for a platformer since it's very rigidly tied to the 30hz physics simulation code of Super Mario 64. It's weirdly programmed and not very intuitive to build off of.
+
+## Differences between this and other forks
+This fork aims to assist people that don't really understand the SM64 Roblox engine
