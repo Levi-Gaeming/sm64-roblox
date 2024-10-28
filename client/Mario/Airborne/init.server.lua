@@ -969,10 +969,6 @@ DEF_ACTION(Action.GROUND_POUND, function(m: Mario)
 					m.ParticleFlags:Add(ParticleFlags.MIST_CIRCLE, ParticleFlags.HORIZONTAL_STAR)
 					m:SetAction(Action.GROUND_POUND_LAND)
 				end
-				if m.Input:Has(InputFlags.A_PRESSED) then
-					m.ParticleFlags:Add(ParticleFlags.MIST_CIRCLE, ParticleFlags.HORIZONTAL_STAR)
-					return m:SetAction(Action.TRIPLE_JUMP) -- Custom function, ground pound jump.
-				end
 			end
 		elseif stepResult == AirStep.HIT_WALL then
 			m:SetForwardVel(-16)
