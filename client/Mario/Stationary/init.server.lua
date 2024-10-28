@@ -871,8 +871,10 @@ DEF_ACTION(Action.GROUND_POUND_LAND, function(m: Mario)
 	if m.Input:Has(InputFlags.STOMPED) then
 		return m:SetAction(Action.SHOCKWAVE_BOUNCE)
 	end
+	if m.Input:Has(InputFlags.A_PRESSED) then
+		return m:SetAction(Action.TRIPLE_JUMP) -- Custom function, ground pound jump
 
-	if m.Input:Has(InputFlags.OFF_FLOOR) then
+	elseif m.Input:Has(InputFlags.OFF_FLOOR) then
 		return m:SetAction(Action.FREEFALL)
 	end
 
