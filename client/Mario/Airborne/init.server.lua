@@ -1,4 +1,5 @@
 --!strict
+
 local ClientCore = script.Parent.Parent
 local FFlags = require(ClientCore.FFlags)
 
@@ -7,11 +8,11 @@ local Animations = System.Animations
 local Sounds = System.Sounds
 local Enums = System.Enums
 local Util = System.Util
-local InputFlags = Enums.InputFlags
+
 local Action = Enums.Action
 local TerrainType = Enums.TerrainType
 local SurfaceClass = Enums.SurfaceClass
-local ActionFlags = Enums.ActionFlags
+
 local AirStep = Enums.AirStep
 local MarioEyes = Enums.MarioEyes
 local InputFlags = Enums.InputFlags
@@ -651,21 +652,13 @@ DEF_ACTION(Action.WALL_KICK_AIR, function(m: Mario)
 	commonAirActionStep(m, Action.JUMP_LAND, Animations.SLIDEJUMP, AirStep.CHECK_LEDGE_GRAB)
 
 	return false
-end) 
+end)
+
 DEF_ACTION(Action.LONG_JUMP, function(m: Mario)
 	local anim = if m.LongJumpIsSlow then Animations.SLOW_LONGJUMP else Animations.FAST_LONGJUMP
 
 	m:PlayMarioSound(Sounds.ACTION_TERRAIN_JUMP, Sounds.MARIO_YAHOO)
-	
-	-- blj anywhere, enable if you want to.
-	
-	--[[if m.Input:Has(InputFlags.Z_DOWN) and m.ForwardVel < -15 then
-		m.Velocity = Util.SetY(m.Velocity, -30)
-	end]]
 
-	if m.Input:Has(InputFlags.Z_PRESSED) then
-		return m:SetAction(Action.GROUND_POUND)
-	end
 	if m:GetFloorType() == SurfaceClass.VERTICAL_WIND and m.ActionState == 0 then
 		m:PlaySound(Sounds.MARIO_HERE_WE_GO)
 		m.ActionState = 1
@@ -905,8 +898,7 @@ end)
 DEF_ACTION(Action.GROUND_POUND, function(m: Mario)
 	local stepResult
 	local yOffset
-	local intendedDYaw = Util.SignedShort(m.IntendedYaw - m.FaceAngle.Y)
-	local intendedMag = m.IntendedMag / 32.0
+
 	m:PlaySoundIfNoFlag(Sounds.ACTION_THROW, MarioFlags.ACTION_SOUND_PLAYED)
 
 	if m.ActionState == 0 then
@@ -925,15 +917,12 @@ DEF_ACTION(Action.GROUND_POUND, function(m: Mario)
 
 		m:SetAnimation(if m.ActionArg == 0 then Animations.START_GROUND_POUND else Animations.TRIPLE_JUMP_GROUND_POUND)
 		
-		
 		if m.Input:Has(InputFlags.B_PRESSED) then
 			m.Velocity = Util.SetY(m.Velocity, 50) -- Custom function, ground pound dive.
 			m.FaceAngle = Util.SetY(m.FaceAngle, m.IntendedYaw)
 			m:SetForwardVel(13)
 			return m:SetAction(Action.DIVE, 1)
 		end
-		
-		
 		if m.ActionTimer == 0 then
 			m:PlaySound(Sounds.ACTION_SPIN)
 		end
@@ -948,13 +937,7 @@ DEF_ACTION(Action.GROUND_POUND, function(m: Mario)
 	else
 		m:SetAnimation(Animations.GROUND_POUND)
 		stepResult = m:PerformAirStep()
-		
-		if m.Input:Has(InputFlags.B_PRESSED) then
-			m.Velocity = Util.SetY(m.Velocity, 40)
-			m.FaceAngle = Util.SetY(m.FaceAngle, m.IntendedYaw)
-			return m:SetAction(Action.DIVE, 1)
-		end
-		
+
 		if stepResult == AirStep.LANDED then
 			if shouldGetStuckInGround(m) then
 				m:PlaySound(Sounds.MARIO_OOOF)
@@ -962,9 +945,6 @@ DEF_ACTION(Action.GROUND_POUND, function(m: Mario)
 				m:SetAction(Action.BUTT_STUCK_IN_GROUND)
 			else
 				m:PlayHeavyLandingSound(Sounds.ACTION_HEAVY_LANDING)
-				if m.Input:Has(InputFlags.A_PRESSED) then
-					return m:SetAction(Action.TRIPLE_JUMP)
-				end
 				if not checkFallDamage(m, Action.HARD_BACKWARD_GROUND_KB) then
 					m.ParticleFlags:Add(ParticleFlags.MIST_CIRCLE, ParticleFlags.HORIZONTAL_STAR)
 					m:SetAction(Action.GROUND_POUND_LAND)
