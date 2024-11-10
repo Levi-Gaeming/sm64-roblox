@@ -42,7 +42,7 @@ local FFLAGS = {
 
 	-- From SM64Plus (https://github.com/MorsGames/sm64plus/blob/master/src/game/mario_actions_airborne.c#L1290)
 	-- Makes Mario do wall sliding (instead of timer with bonking), as seen in the modern games.
-	WALL_SLIDING = false,
+	WALL_SLIDING = true,
 
 	-- From HackerSM64 (https://github.com/HackerN64/HackerSM64/blob/master/src/game/mario_actions_automatic.c#L295)
 	-- Better hangable ceil controls.
