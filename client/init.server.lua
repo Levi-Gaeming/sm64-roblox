@@ -709,7 +709,7 @@ local function update()
 
 		-- Mario code updates MarioState's versions of position etc, so we need
 		-- to sync it with the Mario object
-		local marioObj = (mario :: any).MarioObj
+		local marioObj = mario.MarioObj
 		if marioObj then
 			mario:CopyMarioStateToObject(marioObj)
 		end
@@ -756,8 +756,10 @@ local function update()
 					return onReset()
 				end
 
-				pcall(task.cancel, autoResetThread)
-				autoResetThread = nil :: any
+				if autoResetThread then
+					pcall(task.cancel, autoResetThread)
+					autoResetThread = nil :: any
+				end
 			end)
 		end
 	end
